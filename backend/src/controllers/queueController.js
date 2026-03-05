@@ -206,27 +206,54 @@ const completeConsultation = async (req, res) => {
 };
 
 /**
- * @route GET /api/queue/status/:queueId
+ * @route GET /api/queue/status/:queueIdOrToken
  */
 const getQueueStatus = async (req, res) => {
   const { queueId } = req.params;
 
-  const result = await query(
-    `SELECT q.token_number, q.status, q.estimated_wait_minutes, q.priority_score,
-            q.registered_at, q.called_at, q.is_emergency,
-            d.name as doctor_name, d.department,
-            (SELECT COUNT(*) FROM queues q2 
-             WHERE q2.doctor_id = q.doctor_id 
-             AND q2.status = 'waiting' 
-             AND q2.priority_score > q.priority_score) + 1 as position_in_queue
-     FROM queues q
-     JOIN doctors d ON d.id = q.doctor_id
-     WHERE q.id = $1`,
-    [queueId]
-  );
+  // Strict UUID validation regex
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(queueId);
 
-  if (!result.rows[0]) return res.status(404).json({ success: false, message: 'Queue entry not found' });
-  res.json({ success: true, data: result.rows[0] });
+  try {
+    let queryStr = '';
+    let result;
+
+    if (isUuid) {
+      queryStr = `
+        SELECT q.token_number, q.status, q.estimated_wait_minutes, q.priority_score,
+               q.registered_at, q.called_at, q.is_emergency,
+               d.name as doctor_name, d.department,
+               (SELECT COUNT(*) FROM queues q2 
+                WHERE q2.doctor_id = q.doctor_id 
+                AND q2.status = 'waiting' 
+                AND q2.priority_score > q.priority_score) + 1 as position_in_queue
+        FROM queues q
+        JOIN doctors d ON d.id = q.doctor_id
+        WHERE q.id = $1
+      `;
+      result = await query({ text: queryStr, values: [queueId], name: 'fetch-by-uuid' });
+    } else {
+      queryStr = `
+        SELECT q.token_number, q.status, q.estimated_wait_minutes, q.priority_score,
+               q.registered_at, q.called_at, q.is_emergency,
+               d.name as doctor_name, d.department,
+               (SELECT COUNT(*) FROM queues q2 
+                WHERE q2.doctor_id = q.doctor_id 
+                AND q2.status = 'waiting' 
+                AND q2.priority_score > q.priority_score) + 1 as position_in_queue
+        FROM queues q
+        JOIN doctors d ON d.id = q.doctor_id
+        WHERE q.token_number = $1
+      `;
+      result = await query({ text: queryStr, values: [queueId], name: 'fetch-by-token' });
+    }
+
+    if (!result.rows[0]) return res.status(404).json({ success: false, message: 'Queue entry not found' });
+    res.json({ success: true, data: result.rows[0] });
+  } catch (err) {
+    console.error('getQueueStatus Error:', err.message);
+    res.status(500).json({ success: false, message: 'Failed to retrieve queue status' });
+  }
 };
 
 /**

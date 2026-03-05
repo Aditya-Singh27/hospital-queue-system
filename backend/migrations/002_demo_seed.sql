@@ -8,7 +8,7 @@ INSERT INTO admins (name, email, password_hash, hospital_name, role) VALUES
 (
   'Dr. Rajesh Kumar',
   'admin@hospital.com',
-  '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewwGLX4Z9B5Gm.Iu',
+  '$2a$12$ygg6wBpZpNDV3GuakMM/3ujKkCL.iXj3PnbLAMLcQ7RScqf4CmMW6',
   'City General Hospital',
   'admin'
 )
@@ -16,13 +16,13 @@ ON CONFLICT (email) DO NOTHING;
 
 -- ─── 2. DOCTORS (password for all: Doctor@1234) ──────────────────────────────
 INSERT INTO doctors (name, email, password_hash, specialization, department, avg_consultation_minutes, is_available, shift_start, shift_end, role) VALUES
-('Priya Sharma',    'priya.sharma@hospital.com',    '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'General Physician',         'General',       10, true,  '08:00', '16:00', 'doctor'),
-('Arjun Mehta',     'arjun.mehta@hospital.com',     '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'General Physician',         'General',       12, true,  '10:00', '18:00', 'doctor'),
-('Kavya Reddy',     'kavya.reddy@hospital.com',     '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Emergency Medicine',        'Emergency',      8, true,  '00:00', '23:59', 'doctor'),
-('Rohit Verma',     'rohit.verma@hospital.com',     '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Emergency Medicine',        'Emergency',      7, true,  '00:00', '23:59', 'doctor'),
-('Sunita Patel',    'sunita.patel@hospital.com',    '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Cardiologist',              'Cardiology',    20, true,  '09:00', '17:00', 'doctor'),
-('Vikram Singh',    'vikram.singh@hospital.com',    '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Interventional Cardiology', 'Cardiology',    25, false, '09:00', '17:00', 'doctor'),
-('Ananya Iyer',     'ananya.iyer@hospital.com',     '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Pediatrician',              'Pediatrics',    15, true,  '09:00', '17:00', 'doctor'),
+('Priya Sharma',    'priya.sharma@hospital.com',    '$2a$12$2ypZ0mgIAvkKJmTGyMAmFO2xGMvXu2.hY3nquiyqNXaIQfpP3x9Py', 'General Physician',         'General',       10, true,  '08:00', '16:00', 'doctor'),
+('Arjun Mehta',     'arjun.mehta@hospital.com',     '$2a$12$2ypZ0mgIAvkKJmTGyMAmFO2xGMvXu2.hY3nquiyqNXaIQfpP3x9Py', 'General Physician',         'General',       12, true,  '10:00', '18:00', 'doctor'),
+('Kavya Reddy',     'kavya.reddy@hospital.com',     '$2a$12$2ypZ0mgIAvkKJmTGyMAmFO2xGMvXu2.hY3nquiyqNXaIQfpP3x9Py', 'Emergency Medicine',        'Emergency',      8, true,  '00:00', '23:59', 'doctor'),
+('Rohit Verma',     'rohit.verma@hospital.com',     '$2a$12$2ypZ0mgIAvkKJmTGyMAmFO2xGMvXu2.hY3nquiyqNXaIQfpP3x9Py', 'Emergency Medicine',        'Emergency',      7, true,  '00:00', '23:59', 'doctor'),
+('Sunita Patel',    'sunita.patel@hospital.com',    '$2a$12$2ypZ0mgIAvkKJmTGyMAmFO2xGMvXu2.hY3nquiyqNXaIQfpP3x9Py', 'Cardiologist',              'Cardiology',    20, true,  '09:00', '17:00', 'doctor'),
+('Vikram Singh',    'vikram.singh@hospital.com',    '$2a$12$2ypZ0mgIAvkKJmTGyMAmFO2xGMvXu2.hY3nquiyqNXaIQfpP3x9Py', 'Interventional Cardiology', 'Cardiology',    25, false, '09:00', '17:00', 'doctor'),
+('Ananya Iyer',     'ananya.iyer@hospital.com',     '$2a$12$2ypZ0mgIAvkKJmTGyMAmFO2xGMvXu2.hY3nquiyqNXaIQfpP3x9Py', 'Pediatrician',              'Pediatrics',    15, true,  '09:00', '17:00', 'doctor'),
 ('Deepak Nair',     'deepak.nair@hospital.com',     '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Pediatric Specialist',      'Pediatrics',    12, true,  '10:00', '18:00', 'doctor'),
 ('Sanjay Gupta',    'sanjay.gupta@hospital.com',    '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Orthopedic Surgeon',        'Orthopedics',   20, true,  '08:00', '16:00', 'doctor'),
 ('Meera Krishnan',  'meera.krishnan@hospital.com',  '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Joint Replacement',         'Orthopedics',   30, true,  '09:00', '17:00', 'doctor'),

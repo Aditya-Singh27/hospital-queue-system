@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://hospital-queue-system-1.onrender.com/api',
+  baseURL: process.env.REACT_APP_API_URL || '/api',
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
 });

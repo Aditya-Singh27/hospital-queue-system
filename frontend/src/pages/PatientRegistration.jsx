@@ -417,9 +417,14 @@ export default function PatientRegistration() {
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [customSymptom, setCustomSymptom] = useState('');
 
+  const [showTrackModal, setShowTrackModal] = useState(false);
+  const [trackId, setTrackId] = useState('');
+
   const { register, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm({ defaultValues: { gender: 'male' } });
   const ambulanceForm = useForm();
   const watchDept = watch('department');
+
+  // ... rest of useEffects ...
 
   useEffect(() => {
     doctorAPI.getDepartments()
@@ -488,7 +493,7 @@ export default function PatientRegistration() {
           <div className="pr-meta">
             <div className="pr-meta-cell">
               <div className="pr-meta-lbl">Est. Wait</div>
-              <div className="pr-meta-val">{registeredTicket.estimatedWaitMinutes}<span style={{fontSize:13,fontWeight:500,color:'var(--text-muted)'}}> min</span></div>
+              <div className="pr-meta-val">{registeredTicket.estimatedWaitMinutes}<span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}> min</span></div>
             </div>
             <div className="pr-meta-cell">
               <div className="pr-meta-lbl">Position</div>
@@ -538,6 +543,22 @@ export default function PatientRegistration() {
     <>
       <style>{css}</style>
       <div className="pr">
+        {showTrackModal && (
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="pr-card" style={{ width: 380 }}>
+              <div className="pr-card-hd" style={{ marginBottom: 16 }}>Track your Queue</div>
+              <div className="pr-field">
+                <label className="pr-lbl">Enter Queue ID</label>
+                <input className="pr-input" placeholder="e.g. 123e4567-e89b-12d3... " value={trackId} onChange={e => setTrackId(e.target.value)} />
+              </div>
+              <div className="pr-foot" style={{ marginTop: 20 }}>
+                <button type="button" className="pr-btn-back" onClick={() => setShowTrackModal(false)}>Cancel</button>
+                <button type="button" className="pr-btn-next" disabled={!trackId} onClick={() => window.location.href = `/track/${trackId}`}>Track Status</button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="pr-accent-bar" />
 
         <nav className="pr-nav">
@@ -546,7 +567,7 @@ export default function PatientRegistration() {
             Hospital<span className="pr-logo-q">Q</span>
           </a>
           <div className="pr-nav-right">
-            <a href="/track" className="pr-nav-btn">Track Queue</a>
+            <button type="button" onClick={() => setShowTrackModal(true)} className="pr-nav-btn">Track Queue</button>
             <a href="/login" className="pr-nav-btn primary">Staff Login →</a>
           </div>
         </nav>
@@ -722,8 +743,8 @@ export default function PatientRegistration() {
                   {step < 2
                     ? <button type="button" className="pr-btn-next" onClick={nextStep}>Continue →</button>
                     : <button type="submit" className={`pr-btn-next ${isEmergency ? 'danger' : ''}`} disabled={loading || !selectedDoctorId}>
-                        {loading ? 'Registering...' : isEmergency ? '🚨 Register Emergency' : '🎫 Get My Token'}
-                      </button>}
+                      {loading ? 'Registering...' : isEmergency ? '🚨 Register Emergency' : '🎫 Get My Token'}
+                    </button>}
                 </div>
               </form>
             </div>
