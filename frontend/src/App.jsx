@@ -8,6 +8,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import DoctorQueue from './pages/DoctorQueue';
 import Login from './pages/Login';
 
+import Home from './pages/Home';
+
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, token } = useAuthStore();
   if (!token || !user) return <Navigate to="/login" replace />;
@@ -33,7 +35,7 @@ const Navbar = () => {
         {user?.role === 'doctor' && (
           <Link to="/doctor/queue" className="text-sm text-gray-600 hover:text-blue-600">My Queue</Link>
         )}
-        <Link to="/" className="text-sm text-gray-600 hover:text-blue-600">Register Patient</Link>
+        <Link to="/register" className="text-sm text-gray-600 hover:text-blue-600">Register Patient</Link>
       </div>
       <div className="flex items-center gap-3">
         <span className="text-sm text-gray-500">{user?.name}</span>
@@ -50,7 +52,8 @@ export default function App() {
       <Navbar />
       <Routes>
         {/* Public */}
-        <Route path="/" element={<PatientRegistration />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<PatientRegistration />} />
         <Route path="/track/:queueId" element={<QueueTracker />} />
         <Route path="/login" element={<Login />} />
 
