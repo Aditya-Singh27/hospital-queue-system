@@ -15,7 +15,7 @@ const authenticate = async (req, res, next) => {
     // Verify user still exists and is active
     let userResult;
     if (decoded.role === 'admin' || decoded.role === 'super_admin') {
-      userResult = await query('SELECT id, name, email, role, is_active FROM admins WHERE id = $1', [decoded.id]);
+      userResult = await query('SELECT id, name, email, is_active FROM admins WHERE id = $1', [decoded.id]);
     } else if (decoded.role === 'doctor') {
       userResult = await query('SELECT id, name, email, is_active FROM doctors WHERE id = $1', [decoded.id]);
     } else {
